@@ -1,5 +1,4 @@
 * xref:about.adoc[]
-* xref:download.adoc[]
 * Documentation
 ** xref:getting-started.adoc[]
 ** Tutorial
@@ -11,6 +10,4 @@
 *** xref:tutorial:using-beaneditform-to-create-user-forms.adoc[]
 *** xref:tutorial:using-tapestry-with-hibernate.adoc[]
 ** xref:userguide.adoc[]
-* xref:community.adoc[]
-* xref:developers.adoc[]
 
