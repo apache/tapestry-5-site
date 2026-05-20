@@ -15,7 +15,9 @@ The Tapestry-hibernate-core module provides Value Encoder automatically for all 
 Accessing the page as `/viewperson/152` would load the Person entity with id 152 and use that as the page context.
 
 === Using `@PageActivationContext`
-If you prefer to use annotations, you may let Tapestry generate the page activation context handlers for you. Relying on an existing ValueEncoder for the corresponding property you can use the @PageActivationContext annotation. The disadvantage is that you can't access the handlers in a unit test.
+If you prefer to use annotations, you may let Tapestry generate the page activation context handlers for you.
+Relying on an existing javadoc:org.apache.tapestry5.ValueEncoder[] for the corresponding property you can use the javadoc:org.apache.tapestry5.annotations.PageActivationContext[label=@PageActivationContext] annotation.
+The disadvantage is that you can't access the handlers in a unit test.
 
 === Using `@Persist` with entities
 If you wish to persist an entity in the session, you may use the "entity" persistence strategy:
@@ -37,7 +39,7 @@ Alternatively you can apply the "entity" persistence strategy to a single Hibern
 === Committing Changes
 All Hibernate operations occur in a transaction, but that transaction is aborted at the end of each request; thus any changes you make will be _lost_ unless the transaction is committed.
 
-The correct way to commit the transaction is via the `@CommitAfter` annotation:
+The correct way to commit the transaction is via the javadoc:org.apache.tapestry5.hibernate.annotations.CommitAfter[label=@CommitAfter] annotation:
 
 In this example, the Person object may be updated by a form; the form's success event handler method, `onSuccess()` has the `@CommitAfter` annotation.
 
@@ -52,7 +54,7 @@ The transaction will be *committed* if the method throws a checked exception (on
 === Managing Transactions using DAOs
 As your application grows, you will likely create a Data Access Object layer between your pages and the Hibernate APIs.
 
-The `@CommitAfter` annotation can be useful there as well.
+The javadoc:org.apache.tapestry5.hibernate.annotations.CommitAfter[label=@CommitAfter] annotation can be useful there as well.
 
 You may use `@CommitAfter` on method of your service interface, then use a decorator to provide the transaction management logic.
 
@@ -115,9 +117,19 @@ This option is most often used when the entities themselves are contained in a l
 === Hibernate Symbols
 The Hibernate integration includes a number of symbols used to control certain features:
 
-tapestry.hibernate.provide-entity-value-encoders:: If `true` (the default) then ValueEncoders are automatically provided for all Hibernate entities (ValueEncoders are used to encode the primary keys of entities as strings that can be included in URLs). Set to false if you want direct control over this feature.
-tapestry.hibernate.default-configuration:: If `true` (the default), then the application must include a `hibernate.cfg.xml` file. If your application configures itself entirely in code, you should set this symbol to false.
-tapestry.hibernate.early-startup:: If `true`, the Hibernate is initialized when the application starts up. The default is `false`, to start Hibernate up lazily, on first use.
+tapestry.hibernate.provide-entity-value-encoders::
+If `true` (the default) then javadoc:org.apache.tapestry5.ValueEncoder[]s are automatically provided for all Hibernate entities.
+(`ValueEncoder`s are used to encode the primary keys of entities as strings that can be included in URLs).
+Set to false if you want direct control over this feature.
+
+tapestry.hibernate.default-configuration::
+If `true` (the default), then the application must include a `hibernate.cfg.xml` file.
+If your application configures itself entirely in code, you should set this symbol to false.
+
+tapestry.hibernate.early-startup::
+If `true`, the Hibernate is initialized when the application starts up.
+The default is `false`, to start Hibernate up lazily, on first use.
+
 == Licensing Issues
 Hibernate is licensed under the Lesser GNU Public License.
 This is more restrictive license than the Apache Software License used by the rest of Tapestry.
