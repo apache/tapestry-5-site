@@ -1,4 +1,5 @@
 * xref:about.adoc[]
+* xref:principles.adoc[]
 * Documentation
 ** xref:getting-started.adoc[]
 ** Tutorial
