@@ -86,7 +86,7 @@ These modules do not depend on any Jakarta EE API, so a single artifact serves b
 
 <dependency>
   <groupId>org.apache.tapestry</groupId>
-  <artifactId>tapestry-core${tapestry-artifact-suffix}</artifactId>
+  <artifactId>tapestry-core$\{tapestry-artifact-suffix}</artifactId>
   <version>{tapestry-version}</version>
 </dependency>
 
@@ -117,7 +117,7 @@ Run it from the root of your project:
 java -jar tapestry-version-migrator-{tapestry-version}.jar artifactSuffix -jakarta
 ----
 
-It walks the current directory recursively, and for every `pom.xml` it finds it adds a `tapestry-artifact-suffix` property and appends `${tapestry-artifact-suffix}` to the artifact id of every Tapestry dependency that has a suffixed variant.
+It walks the current directory recursively, and for every `pom.xml` it finds it adds a `tapestry-artifact-suffix` property and appends `+${tapestry-artifact-suffix}+` to the artifact id of every Tapestry dependency that has a suffixed variant.
 Passing no suffix at all switches a project back to the javax artifacts:
 
 [subs="+attributes"]
