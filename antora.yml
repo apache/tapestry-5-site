@@ -7,5 +7,5 @@ nav:
 - modules/faq/nav.adoc
 asciidoc:
   attributes:
-    javadoc-version: current
+    javadoc-version: 5.8.7
     tapestry-namespace: http://tapestry.apache.org/schema/tapestry_5_4.xsd
