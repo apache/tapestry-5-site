@@ -1,6 +1,6 @@
 name: userguide
 title: User Guide
-version: 5.8
+version: 5.9
 nav:
 - modules/ROOT/nav.adoc
 - modules/cookbook/nav.adoc
@@ -8,4 +8,5 @@ nav:
 asciidoc:
   attributes:
     javadoc-version: current
+    tapestry-version: 5.9.1
     tapestry-namespace: http://tapestry.apache.org/schema/tapestry_5_4.xsd

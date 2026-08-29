@@ -1,0 +1,242 @@
+= Migrating to Jakarta EE
+:navtitle: Jakarta EE Migration
+
+Tapestry 5.9 is the first release built on https://jakarta.ee/[Jakarta EE] 9.
+Everything that used to live under `javax.servlet`, `javax.persistence`, `javax.validation` and `javax.inject` now lives under `jakarta.*`.
+
+This page explains what changed, how to pick the right artifacts, and what to do in your own code.
+
+== Two builds of the same release
+
+The move to Jakarta EE 9 cannot be made backwards compatible: a class compiled against `javax.servlet.http.HttpServletRequest` will not run in a container that only provides `jakarta.servlet.http.HttpServletRequest`, and vice versa.
+
+Rather than force every application onto Jakarta at once, Tapestry 5.9 is released from two branches at the same version number:
+
+[%autowidth]
+|===
+|Build |Servlet API |Artifact ids |Typical container
+
+|Jakarta
+|`jakarta.servlet` 5.0
+|suffixed with `-jakarta`, e.g. `tapestry-core-jakarta`
+|Tomcat 10+, Jetty 11+, WildFly 27+
+
+|javax
+|`javax.servlet` 3.0+
+|unchanged, e.g. `tapestry-core`
+|Tomcat 9, Jetty 9-10
+|===
+
+Both builds contain the same features and bug fixes.
+The javax build exists so that applications which cannot move their container yet can still upgrade to 5.9.
+
+[IMPORTANT]
+====
+Do not mix the two.
+A project must use either all `-jakarta` artifacts or all unsuffixed ones, together with a matching Servlet API dependency and container.
+====
+
+=== Artifacts that carry the suffix
+
+These modules touch a Jakarta EE API and therefore ship twice:
+
+[cols="1,1,1",frame=none,grid=none]
+|===
+a|
+* `tapestry-core`
+* `tapestry-http`
+* `tapestry-ioc`
+* `tapestry-ioc-jcache`
+* `tapestry-ioc-junit`
+* `tapestry-upload`
+* `tapestry-webresources`
+a|
+* `tapestry-hibernate`
+* `tapestry-hibernate-core`
+* `tapestry-jpa`
+* `tapestry-beanvalidator`
+* `tapestry-spring`
+* `tapestry-mongodb`
+* `tapestry-jmx`
+a|
+* `tapestry-rest-jackson`
+* `tapestry-openapi-viewer`
+* `tapestry-kaptcha`
+* `tapestry-clojure`
+* `tapestry-test`
+* `tapestry-runner`
+* `tapestry-spock`
+|===
+
+=== Artifacts that do not
+
+These modules do not depend on any Jakarta EE API, so a single artifact serves both builds and the id never changes:
+
+`plastic`, `commons`, `beanmodel`, `tapestry-json`, `tapestry-func`, `tapestry5-annotations`, `genericsresolver-guava`, `tapestry-javadoc`, `tapestry-version-migrator`
+
+== Updating your build
+
+.Maven: a Jakarta project
+[source,xml,subs="+attributes"]
+----
+<properties>
+  <!-- Tapestry artifact id suffix: empty value or '-jakarta' -->
+  <tapestry-artifact-suffix>-jakarta</tapestry-artifact-suffix>
+</properties>
+
+<dependency>
+  <groupId>org.apache.tapestry</groupId>
+  <artifactId>tapestry-core${tapestry-artifact-suffix}</artifactId>
+  <version>{tapestry-version}</version>
+</dependency>
+
+<dependency>
+  <groupId>jakarta.servlet</groupId>
+  <artifactId>jakarta.servlet-api</artifactId>
+  <version>5.0.0</version>
+  <scope>provided</scope>
+</dependency>
+----
+
+Driving the suffix from a property means you can switch a project between the two builds by editing a single value.
+
+.Gradle: a Jakarta project
+[source,gradle,subs="+attributes"]
+----
+implementation 'org.apache.tapestry:tapestry-core-jakarta:{tapestry-version}'
+compileOnly 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+----
+
+=== Letting the migration tool do it
+
+The `tapestry-version-migrator` module can introduce the property and rewrite the artifact ids across a multi-module Maven build for you.
+Run it from the root of your project:
+
+[subs="+attributes"]
+----
+java -jar tapestry-version-migrator-{tapestry-version}.jar artifactSuffix -jakarta
+----
+
+It walks the current directory recursively, and for every `pom.xml` it finds it adds a `tapestry-artifact-suffix` property and appends `${tapestry-artifact-suffix}` to the artifact id of every Tapestry dependency that has a suffixed variant.
+Passing no suffix at all switches a project back to the javax artifacts:
+
+[subs="+attributes"]
+----
+java -jar tapestry-version-migrator-{tapestry-version}.jar artifactSuffix
+----
+
+NOTE: The tool rewrites `pom.xml` files in place through an XML transformer, so it will also reformat them. Run it on a clean working tree so you can review the diff.
+
+== Updating your code
+
+=== Package renames
+
+Change the imports in your own classes:
+
+[%autowidth]
+|===
+|Before |After
+
+|`javax.servlet.*`
+|`jakarta.servlet.*`
+
+|`javax.servlet.http.*`
+|`jakarta.servlet.http.*`
+
+|`javax.persistence.*`
+|`jakarta.persistence.*`
+
+|`javax.validation.*`
+|`jakarta.validation.*`
+
+|`javax.inject.*`
+|`jakarta.inject.*`
+
+|`javax.annotation.*`
+|`jakarta.annotation.*`
+|===
+
+Tapestry's own packages are unchanged: javadoc:org.apache.tapestry5.TapestryFilter[] and everything else under `org.apache.tapestry5` keeps its name in both builds.
+
+=== web.xml
+
+The deployment descriptor namespace changes, but the Tapestry filter declaration itself does not:
+
+.web.xml (partial)
+[source,xml]
+----
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+...
+    <filter>
+        <filter-name>app</filter-name>
+        <filter-class>org.apache.tapestry5.TapestryFilter</filter-class>
+    </filter>
+...
+</web-app>
+----
+
+See xref:configuration.adoc[] for the rest of the descriptor.
+
+=== File uploads
+
+`tapestry-upload` moved from Apache Commons FileUpload 1.x to https://commons.apache.org/proper/commons-fileupload/[Commons FileUpload 2] (`commons-fileupload2-jakarta`).
+Two things are visible to applications:
+
+* `org.apache.commons.fileupload.FileUploadException` is now `org.apache.commons.fileupload2.core.FileUploadException`.
+Adjust any exception handler that catches it by name.
+* The protected `MultipartDecoderImpl.createFileUpload()` method now returns `JakartaServletFileUpload` instead of `ServletFileUpload`.
+If you subclass it to customise upload handling, update the signature.
+
+See xref:uploading-files.adoc[] for details.
+
+=== Third-party libraries
+
+Anything else in your dependency tree that implements or consumes a Servlet API interface has to move to a Jakarta-compatible version as well.
+The versions Tapestry 5.9 itself builds against are:
+
+[%autowidth]
+|===
+|Library |Version |Note
+
+|Jakarta Servlet
+|5.0.0
+|
+
+|Jakarta Persistence
+|3.0.0
+|EclipseLink 3.0.4 is used in the tests
+
+|Jakarta Validation
+|3.0.2
+|with Hibernate Validator 8.0.1.Final
+
+|Jakarta Inject
+|2.0.1
+|see xref:using-jsr-330-standard-annotations.adoc[]
+
+|Commons FileUpload
+|2.0.0-M1
+|`commons-fileupload2-jakarta`
+
+|Spring
+|6.0.11
+|requires Java 17, see below
+|===
+
+[IMPORTANT]
+====
+`tapestry-spring` depends on Spring 6, which requires *Java 17*.
+The rest of Tapestry targets Java 8 bytecode and is tested on Java 11 and 17.
+If your application uses `tapestry-spring`, Java 17 becomes the minimum for the whole project.
+====
+
+Note that `tapestry-hibernate` still builds against Hibernate 5.4, whose own upgrade was postponed because of the size of the API change between Hibernate 5 and 6.
+
+== Staying on javax
+
+If you are not ready, you do not have to do anything: keep using the unsuffixed artifacts and upgrade the version to {tapestry-version} as usual.
+You get every 5.9 fix and feature, and can move to the `-jakarta` artifacts later.

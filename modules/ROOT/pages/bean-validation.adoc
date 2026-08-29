@@ -15,7 +15,7 @@ In order to use this library you have to choose an implementation of the JSR-303
 This library is not specific to any implementation of JSR-303 and will work with any implementation of your choice.
 
 === Bootstraping the Bean Validator
-The javadoc:org.apache.tapestry5.beanvalidator.BeanValidatorSource[] service is responsible for bootstrapping the `javax.validation.Validator`.
+The javadoc:org.apache.tapestry5.beanvalidator.BeanValidatorSource[] service is responsible for bootstrapping the `jakarta.validation.Validator`.
 You can contribute a javadoc:org.apache.tapestry5.beanvalidator.BeanValidatorConfigurer[] to the configuration of this service in order to participate on the configuration of `Validator`.
 
 .Module Class
@@ -26,7 +26,7 @@ public static void provideBeanValidatorConfigurer(OrderedConfiguration<BeanValid
 {
    configuration.add("MyConfigurer", new BeanValidatorConfigurer()
    {
-      public void configure(javax.validation.Configuration<?> configuration)
+      public void configure(jakarta.validation.Configuration<?> configuration)
       {
          configuration.ignoreXmlConfiguration();
       }

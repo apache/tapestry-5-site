@@ -57,6 +57,11 @@ Conditionally renders its body. May render its tag and any informal parameters.
 javadoc:org.apache.tapestry5.corelib.components.Loop[]::
 Loops over a number of items (provided by its source parameter), rendering its body for each one.
 
+javadoc:org.apache.tapestry5.corelib.components.Recursive[]::
+Loop-like component that renders its body recursively over parent/child data such as trees or nested menus.
+The point at which the children are rendered is marked with javadoc:org.apache.tapestry5.corelib.components.RecursiveBody[].
+Since 5.9.
+
 javadoc:org.apache.tapestry5.corelib.components.Unless[]::
 Inverse of the javadoc:org.apache.tapestry5.corelib.components.If[] component, renders its body if the condition is `false`.
 

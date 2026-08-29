@@ -40,7 +40,8 @@ Once you work in Tapestry there's no going back!
 Tapestry is released under the Apache Software License 2.0.
 
 == Tapestry as a Java Servlet Filter
-Tapestry integrates with the Java Servlet API by implementing https://docs.oracle.com/javaee/7/api/javax/servlet/Filter.html[javax.servlet.Filter].
+Tapestry integrates with the Jakarta Servlet API by implementing https://jakarta.ee/specifications/servlet/5.0/apidocs/jakarta/servlet/filter[jakarta.servlet.Filter].
+If you are using the javax build of Tapestry 5.9, it implements `javax.servlet.Filter` instead; see xref:jakarta-ee-migration.adoc[].
 Similar to servlets, filters are added to a web application in the deployment descriptor (`web.xml`).
 
 .web.xml (partial)

@@ -6,8 +6,13 @@ You can also go the other way, injecting Tapestry services in Spring beans.
 For integrating Spring Security into your application, see xref:security.adoc[].
 
 == Spring Version
-This module is compiled and tested against Spring Framework 2.5.6.
-It should be reasonable to override the dependency to earlier versions of Spring, though the code makes use of some APIs that were added to Spring to support JDK 1.5 annotations.
+As of Tapestry 5.9 this module is compiled and tested against Spring Framework 6.0.11.
+
+[IMPORTANT]
+====
+Spring 6 requires *Java 17*.
+The rest of Tapestry targets Java 8 bytecode and is tested on Java 11 and 17, so adding `tapestry-spring` raises the minimum Java version for your whole application to 17.
+====
 
 == Usage
 The integration is designed to be a very thin layer on top of Spring's normal configuration for a web application.

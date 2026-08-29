@@ -21,9 +21,9 @@ If you're using Maven, just add the `tapestry-jpa` dependency to your applicatio
 If you aren't using Maven (or Gradle, Ivy, etc), you'll have to download the jar and its dependencies yourself.
 
 == Selecting a JPA Implementation
-The `tapestry-jpa` module includes a dependency on a JPA specification (API) from Geronimo but not an implementation.
-You'll have to chose a JPA implementation, such as EclipseLink or Hibernate.
-The`tapestry-jpa` module assumes you'll use EclipseLink.
+The `tapestry-jpa` module depends on the Jakarta Persistence API (`jakarta.persistence:jakarta.persistence-api:3.0.0`) but not on an implementation.
+You'll have to choose a JPA implementation, such as EclipseLink or Hibernate.
+The `tapestry-jpa` module assumes you'll use EclipseLink.
 You just have to add the EclipseLink dependency:
 
 .pom.xml (partial) for EclipseLink
@@ -36,40 +36,28 @@ You just have to add the EclipseLink dependency:
 </dependency>
 ----
 
-Or, if you'd rather use Hibernate as your JPA implementation, you'll want to exclude either the Gernonimo or Hibernate JPA specification JAR:
+Whichever implementation you pick, it has to be a Jakarta Persistence 3.0 build – EclipseLink 3.x or Hibernate 6.x – because a JPA 2.x implementation still expects `javax.persistence`.
+Tapestry's own integration tests run against EclipseLink 3.0.4.
 
-.pom.xml (partial) for Hibernate
-[source,xml]
-----
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-entitymanager</artifactId>
-    <version>${hibernate-version}</version>
-    <exclusions>
-        <exclusion>
-            <!-- omit Geronimo JPA spec to avoid conflict with Hibernate JPA spec -->
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jpa_2.0_spec</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-----
+IMPORTANT: This applies to the Jakarta build of Tapestry 5.9.
+If you are using the javax build, stay on a JPA 2.x implementation.
+See xref:jakarta-ee-migration.adoc[].
 
 == Configuring JPA
 The `persistence.xml` file is the standard configuration file in JPA used to define the persistence units.
-Tapestry reads this file to create the `javax.persistence.EntityManagerFactory`.
+Tapestry reads this file to create the `jakarta.persistence.EntityManagerFactory`.
 The following example demonstrates a `persistence.xml` file.
 
 .persistence.xml
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
    <persistence-unit name="DemoUnit" transaction-type="RESOURCE_LOCAL">
        <properties>
-          <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-          <property name="javax.persistence.jdbc.url"    value="jdbc:h2:mem:test" />
-          <property name="javax.persistence.jdbc.user"   value="sa" />
+          <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver" />
+          <property name="jakarta.persistence.jdbc.url"    value="jdbc:h2:mem:test" />
+          <property name="jakarta.persistence.jdbc.user"   value="sa" />
           <property name="eclipselink.ddl-generation"    value="create-tables"/>
           <property name="eclipselink.logging.level"     value="fine"/>
       </properties>
@@ -94,7 +82,7 @@ public static void provideFactoryDefaults(final MappedConfiguration<String, Stri
 
 == XML-less JPA configuration
 With Tapestry, configuring JPA can be much simpler than described by the JPA specification.
-Tapestry allows you to configure the `javax.persistence.EntityManagerFactory` programmatically, without writing any XML.
+Tapestry allows you to configure the `jakarta.persistence.EntityManagerFactory` programmatically, without writing any XML.
 For example, imagine that you want to use JDBC connections managed by the container and provided through JNDI.
 The resulting persistence descriptor might look like this:
 
@@ -102,8 +90,8 @@ The resulting persistence descriptor might look like this:
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
-             version="2.0">
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             version="3.0">
    <persistence-unit name="JTAUnit" transaction-type="RESOURCE_LOCAL">
       <non-jta-data-source>jdbc/JPATest</non-jta-data-source>
       <properties>
@@ -138,7 +126,7 @@ In the example above you can see a contribution to the javadoc:org.apache.tapest
 This service is responsible for creating the `EntityManagerFactory` to be used to create `EntityManager`.
 When the service is initialized, it parses the `persistence.xml` file, if available.
 For any persistence unit defined in the XML descriptor a javadoc:org.apache.tapestry5.jpa.TapestryPersistenceUnitInfo[] object is created.
-The `TapestryPersistenceUnitInfo` interface is a mutable extension of the `javax.persistence.spi.PersistenceUnitInfo` interface (defined in the JPA specification) that allows you to configure a persistence unit programmatically.
+The `TapestryPersistenceUnitInfo` interface is a mutable extension of the `jakarta.persistence.spi.PersistenceUnitInfo` interface (defined in the JPA specification) that allows you to configure a persistence unit programmatically.
 
 After parsing the persistence descriptor, the `EntityManagerSource` service applies its configuration to create further persistence units and/or update the existing ones.
 The service’s configuration is a map in which persistence unit names are associated with javadoc:org.apache.tapestry5.jpa.PersistenceUnitConfigurer[] instances.

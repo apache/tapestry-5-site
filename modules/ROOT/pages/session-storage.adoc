@@ -250,3 +250,48 @@ public static void contributeApplicationDefaults(MappedConfiguration<String,Stri
   // ...
 }
 ----
+
+=== Controlling the lock per call
+
+Locking used to be entirely implicit, which made it possible for a thread to lock up while reading from the session (issue:2799[]).
+Since 5.9, javadoc:org.apache.tapestry5.http.services.Session[] exposes the lock it acquires through `Session.LockMode`:
+
+`NONE`:: No lock is acquired.
+`READ`:: A shared read lock is acquired.
+`WRITE`:: An exclusive write lock is acquired.
+
+Each accessor has an overload taking a `LockMode`, alongside the original method which keeps its previous default:
+
+[%autowidth]
+|===
+|Method |Default lock
+
+|`getAttribute(String)`
+|`WRITE`
+
+|`getAttributeNames()`, `getAttributeNames(String prefix)`
+|`READ`
+
+|`containsAttribute(String)`
+|`READ`
+|===
+
+[source,java]
+----
+@Inject
+private Request request;
+
+public boolean isCartPresent()
+{
+  Session session = request.getSession(false);
+
+  // A shared read lock is enough to look at what is there.
+  return session != null
+      && session.containsAttribute(CART_ATTRIBUTE, Session.LockMode.READ);
+}
+----
+
+The actual lock taken also depends on what the current thread already holds: if a thread already owns a write lock, asking for a read lock does not downgrade it.
+
+NOTE: `containsAttribute(String)` and `containsAttribute(String, LockMode)` were both added in 5.9.
+Passing `LockMode.NONE` skips locking for a single call without turning `tapestry.session-locking-enabled` off for the whole application.

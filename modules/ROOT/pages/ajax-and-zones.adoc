@@ -387,3 +387,22 @@ require(["t5/core/ajax", "jquery"], function (ajax, $) {
 
 If you're trying to invoke a page class event handler, you can change line 5 above to element: `null`.
 You do need to explicitly set the element property, otherwise the ajax function will treat the first parameter, url, as an URL and not as an event name.
+
+=== Custom request headers
+
+Since Tapestry 5.9 (issue:2782[]), the `options` parameter accepts a `headers` object whose key/value pairs are added to the request headers:
+
+[source,javascript]
+----
+require(["t5/core/ajax"], function (ajax) {
+    ajax('answer', {
+        element: null,
+        headers: {
+            "X-Tenant-Id": currentTenantId
+        },
+        success: function(response) { /* ... */ }
+    });
+});
+----
+
+This is useful for passing correlation ids, tenant identifiers or tokens that a server-side filter reads from the request, without encoding them into the URL or the form data.

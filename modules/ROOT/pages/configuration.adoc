@@ -12,10 +12,11 @@ Most of the configuration is boilerplate, nearly the same for all applications.
 .web.xml (partial)
 [source,xml]
 ----
-<!DOCTYPE web-app
-      PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-      "http://java.sun.com/dtd/web-app_2_3.dtd">
-<web-app>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
     <display-name>My Tapestry Application</display-name>
     <context-param>
         <param-name>tapestry.app-package</param-name>
@@ -32,6 +33,10 @@ Most of the configuration is boilerplate, nearly the same for all applications.
 </web-app>
 ----
 <1> Or org.apache.tapestry5.*http*.TapestryFilter if you're using tapestry-http without tapestry-core
+
+NOTE: The descriptor above targets Jakarta EE 9, which is what Tapestry 5.9 is built on.
+If you are using the javax build, keep the `javaee` namespace (or the older DTD) and a `version` of 3.1 or below.
+See xref:jakarta-ee-migration.adoc[] for the difference between the two builds.
 
 The application-specific part, the `tapestry.app-package` context parameter, provides your application's root package name.
 Tapestry uses this to locate your page and component classes.

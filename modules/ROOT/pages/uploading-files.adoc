@@ -1,6 +1,17 @@
 = Uploading Files
 
-Tapestry provides a file upload component based on https://commons.apache.org/fileupload/[Apache Commons FileUpload] to make it easier to handle files uploaded through web forms (via the standard `<input type="file">` HTML element).
+Tapestry provides a file upload component based on https://commons.apache.org/proper/commons-fileupload/[Apache Commons FileUpload] to make it easier to handle files uploaded through web forms (via the standard `<input type="file">` HTML element).
+
+[IMPORTANT]
+====
+Since 5.9, `tapestry-upload` builds on Commons FileUpload 2 (`commons-fileupload2-jakarta`) instead of the 1.x line.
+Two things are visible to applications:
+
+* `org.apache.commons.fileupload.FileUploadException` moved to `org.apache.commons.fileupload2.core.FileUploadException`.
+* The protected `MultipartDecoderImpl.createFileUpload()` method now returns `JakartaServletFileUpload` instead of `ServletFileUpload`, which matters if you subclass it.
+
+See xref:jakarta-ee-migration.adoc[].
+====
 
 == Downloading
 `tapestry-upload` is not automatically included in Tapestry applications because of the additional dependencies it requires.

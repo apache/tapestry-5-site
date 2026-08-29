@@ -3,9 +3,14 @@
 JSR-330 annotations can be used for injection in Tapestry 5.3 and later.
 The following table demonstrates that most of annotations in Tapestry IoC and JSR-330 are interchangeable. However, there are few differences in semantics.
 
+NOTE: Since 5.9 the annotations come from `jakarta.inject:jakarta.inject-api:2.0.1` rather than `javax.inject:javax.inject:1`.
+The annotation names are unchanged; only the package differs.
+If you are using the javax build of 5.9, read `javax.inject` wherever this page says `jakarta.inject`.
+See xref:jakarta-ee-migration.adoc[].
+
 [%autowidth]
 |===
-|JSR-330 `javax.inject` |Tapestry `org.apache.tapestry5.ioc.annotations` |Comment
+|JSR-330 `jakarta.inject` |Tapestry `org.apache.tapestry5.ioc.annotations` |Comment
 
 |@Inject
 |@Inject
@@ -66,8 +71,8 @@ For this purpose JSR-330 provides the `@Named` annotation which accompanies the 
 
 [source,java]
 ----
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 ...
 
@@ -148,14 +153,14 @@ public class Index {
    @Inject
    private Request request;
 
-   @javax.inject.Inject
+   @jakarta.inject.Inject
    private ComponentResources resources;
 
-   @javax.inject.Inject
+   @jakarta.inject.Inject
    @Named("FrenchGreeter")
    private Greeter greeter;
 
-   @javax.inject.Inject
+   @jakarta.inject.Inject
    @Symbol(SymbolConstants.PRODUCTION_MODE)
    private boolean productionMode;
 
@@ -186,7 +191,7 @@ In JSR-330 a qualifier annotation like `@French` in the example above needs to b
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@javax.inject.Qualifier
+@jakarta.inject.Qualifier
 public @interface French {
 }
 ----
