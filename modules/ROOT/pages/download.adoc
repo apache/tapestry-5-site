@@ -4,22 +4,46 @@ Tapestry can be downloaded from various places, described below, in either binar
 
 == Using a Build Tool
 The easiest way is to download Tapestry and its dependencies from the https://repo1.maven.org/maven2/[Maven Central Repository], leveraging a build tool such as https://maven.apache.org/[Apache Maven], https://www.gradle.org/[Gradle] etc.
-Just declare a dependency on Tapestry (see below for sample dependency declararions) and let the build tool take care of downloading the necessary files to your local machine. 
+Just declare a dependency on Tapestry (see below for sample dependency declararions) and let the build tool take care of downloading the necessary files to your local machine.
+
+=== Jakarta EE or javax?
+
+Since 5.9, Tapestry is published in two flavours from the same source, at the same version number:
+
+[%autowidth]
+|===
+|Flavour |Servlet API |Artifact ids |Containers
+
+|*Jakarta* (recommended for new projects)
+|`jakarta.servlet` 5.0
+|suffixed with `-jakarta`
+|Tomcat 10+, Jetty 11+
+
+|*javax* (for existing applications)
+|`javax.servlet` 3.0+
+|unchanged
+|Tomcat 9, Jetty 9-10
+|===
+
+Both contain the same features and fixes.
+Pick the one that matches your servlet container, and don't mix the two.
+See the xref:userguide::jakarta-ee-migration.adoc[Jakarta EE migration guide] for the full list of affected artifacts and what to change in your code.
 
 .Maven: Dependency on Tapestry to be added to your `pom.xml`
 [source,xml,subs="+attributes"]
 ----
 <dependency>
   <groupId>org.apache.tapestry</groupId>
-  <artifactId>tapestry-core</artifactId>
+  <artifactId>tapestry-core-jakarta</artifactId> <!--1-->
   <version>{tapestry-version}</version>
 </dependency>
 ----
+<1> Use `tapestry-core` instead for the javax flavour.
 
 .Gradle: Dependency on Tapestry to be added to your `build.gradle`
 [source,gradle,subs="+attributes"]
 ----
-implementation 'org.apache.tapestry:tapestry-core:{tapestry-version}'
+implementation 'org.apache.tapestry:tapestry-core-jakarta:{tapestry-version}'
 ----
 
 

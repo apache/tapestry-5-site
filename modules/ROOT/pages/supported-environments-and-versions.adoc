@@ -10,9 +10,10 @@ If you know of any other known compatibilities or incompatibilities, please add 
 
 [%autowidth]
 |===
-|Tapestry | 5.8.4+ | 5.8.1 - 5.8-3 |5.7 |5.6 |5.5 |5.4 |5.3.8 |5.3.0 - 5.3.7 |5.0 - 5.2
+|Tapestry |5.9 | 5.8.4+ | 5.8.1 - 5.8-3 |5.7 |5.6 |5.5 |5.4 |5.3.8 |5.3.0 - 5.3.7 |5.0 - 5.2
 
 |Java JRE
+|11-21 footnote:java59[Tapestry 5.9 is still compiled to Java 8 bytecode, but Java 11 is the practical minimum because of the Jakarta EE 9 stack it depends on. The project's CI matrix covers Java 11 and 17. `tapestry-spring` depends on Spring 6 and therefore requires Java 17.]
 |8-21
 |8-17
 |8-14
@@ -24,7 +25,8 @@ If you know of any other known compatibilities or incompatibilities, please add 
 |5,6
 
 |Servlet API
-|3.0+ 
+|Jakarta Servlet 5.0 footnote:jakarta59[Tapestry 5.9 ships in two flavours: the Jakarta one (artifacts suffixed with `-jakarta`) targets Jakarta Servlet 5.0, and the javax one (unsuffixed artifacts) keeps targeting `javax.servlet` 3.0+. See the xref:userguide::jakarta-ee-migration.adoc[Jakarta EE migration guide].]
+|3.0+
 |3.0+
 |3.0+
 |3.0+
@@ -38,9 +40,11 @@ If you know of any other known compatibilities or incompatibilities, please add 
 == App Servers
 [%autowidth]
 |===
-|Tapestry |5.5+ |5.4 |5.3.8 |5.3.0 - 5.3.7 |5.2 |5.1 | 5.0.10 |5.0.8|5.0
+|Tapestry |5.9 (Jakarta) |5.9 (javax) |5.5+ |5.4 |5.3.8 |5.3.0 - 5.3.7 |5.2 |5.1 | 5.0.10 |5.0.8|5.0
 
 |Apache Tomcat
+|10+
+|9
 |6+
 |
 |
@@ -52,6 +56,8 @@ If you know of any other known compatibilities or incompatibilities, please add 
 |
 
 |Jetty
+|11+
+|9-10
 |9
 |7-9
 |6-9
@@ -68,12 +74,16 @@ If you know of any other known compatibilities or incompatibilities, please add 
 |
 |
 |
+|
+|
 |2.1
 |
 |
 |
 
 |JBoss EAP
+|
+|
 |
 |4.2.3
 |
@@ -91,9 +101,10 @@ These are the library versions known to work (and, in some cases, bundled with T
 
 [%autowidth]
 |===
-|Tapestry |5.7.3+ |5.5+ |5.4.1 |5.4 |5.3.8 |5.3.7 | 5.3.3-5.3.6 |5.3.2|5.3 - 5.3.1 |5.2.1 - 5.2.0 |5.1 |5.0.16 |5.0.10 |5.0.8 |5.0
+|Tapestry |5.9 |5.7.3+ |5.5+ |5.4.1 |5.4 |5.3.8 |5.3.7 | 5.3.3-5.3.6 |5.3.2|5.3 - 5.3.1 |5.2.1 - 5.2.0 |5.1 |5.0.16 |5.0.10 |5.0.8 |5.0
 
 |Hibernate
+|5.4.32.Final
 |5.4.32.Final
 |5.1.0.Final
 |
@@ -111,6 +122,7 @@ These are the library versions known to work (and, in some cases, bundled with T
 |
 
 |Spring
+|6.0.11
 |
 |
 |
@@ -130,6 +142,7 @@ These are the library versions known to work (and, in some cases, bundled with T
 |jQuery.js
 |
 |
+|
 |1.12.1
 |
 |
@@ -145,6 +158,7 @@ These are the library versions known to work (and, in some cases, bundled with T
 |
 
 |Prototype.js
+|
 |
 |
 |
@@ -166,6 +180,7 @@ These are the library versions known to work (and, in some cases, bundled with T
 |
 |
 |
+|
 |1.9
 |1.9
 |1.9
@@ -179,6 +194,7 @@ These are the library versions known to work (and, in some cases, bundled with T
 |1.8.0
 
 |Bootstrap CSS
+|
 |
 |4.3.1, 3.3.6
 |3.3.6
@@ -196,6 +212,7 @@ These are the library versions known to work (and, in some cases, bundled with T
 |
 
 |Moment.js
+|
 |
 |
 |2.12.0
@@ -216,6 +233,7 @@ These are the library versions known to work (and, in some cases, bundled with T
 |
 |
 |
+|
 |1.2.1 - 1.9
 |
 |
@@ -230,6 +248,7 @@ These are the library versions known to work (and, in some cases, bundled with T
 |
 
 |Underscore.js
+|
 |
 |
 |

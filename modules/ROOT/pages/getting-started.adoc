@@ -24,9 +24,26 @@ mvn archetype:generate -Dfilter=org.apache.tapestry:quickstart
 ----
 
 (Alternatively, if you want to get an archetype for a not-yet-released version of Tapestry – most users don't – you can use the staging URI, https://repository.apache.org/content/repositories/staging ).
-// TODO explain how to use the stagingn URI 
+// TODO explain how to use the stagingn URI
 
-Maven will prompt you for the archetype to create ("Tapestry 5 Quickstart Project") and the exact version number (e.g., "5.8.7").
+[IMPORTANT]
+====
+*Check the generated `pom.xml` when using the 5.9.1 archetype.*
+
+Tapestry 5.9 ships in a Jakarta EE flavour (artifacts suffixed with `-jakarta`) and a javax flavour (unsuffixed artifacts), as explained on the xref:download.adoc[] page.
+The generated project declares `jakarta.servlet-api` and the Jetty 11 plugin, which need the Jakarta flavour, but still names the unsuffixed Tapestry artifacts.
+Before running the project, change the Tapestry dependencies to their `-jakarta` names:
+
+[source,xml]
+----
+<artifactId>tapestry-core-jakarta</artifactId>
+<artifactId>tapestry-webresources-jakarta</artifactId>
+----
+
+Alternatively, keep the unsuffixed artifacts and replace `jakarta.servlet:jakarta.servlet-api` with `javax.servlet:javax.servlet-api` and the Jetty 11 plugin with Jetty 10, to build a javax project instead.
+====
+
+Maven will prompt you for the archetype to create ("Tapestry 5 Quickstart Project") and the exact version number (e.g., "5.9.1").
 It also asks you for a group id, an artifact id, and a version number. You can see this in the following transcript:
 
 ----
@@ -58,7 +75,8 @@ Choose org.apache.tapestry:quickstart version:
 7: 5.6.4
 8: 5.7.3
 9: 5.8.7
-Choose a number: 9: 9
+10: 5.9.1
+Choose a number: 10: 10
 Define value for property 'groupId': : com.example
 Define value for property 'artifactId': : newapp
 Define value for property 'version':  1.0-SNAPSHOT: : 
@@ -70,7 +88,7 @@ version: 1.0-SNAPSHOT
 package: com.example.newapp
  Y: : Y
 [INFO] ----------------------------------------------------------------------------
-[INFO] Using following parameters for creating project from Archetype: quickstart:5.8.6
+[INFO] Using following parameters for creating project from Archetype: quickstart:5.9.1
 [INFO] ----------------------------------------------------------------------------
 [INFO] Parameter: groupId, Value: com.example
 [INFO] Parameter: artifactId, Value: newapp
@@ -114,7 +132,7 @@ Application 'app' (version 1.0-SNAPSHOT-DEV) startup time: 329 ms to build IoC R
 /_  __/__ ____  ___ ___ / /_______ __  / __/
  / / / _ `/ _ \/ -_|_-</ __/ __/ // / /__ \
 /_/  \_,_/ .__/\__/___/\__/_/  \_, / /____/
-        /_/                   /___/  5.8.7 (development mode)
+        /_/                   /___/  5.9.1 (development mode)
 
 [INFO] Started SelectChannelConnector@0.0.0.0:8080
 [INFO] Started Jetty Server

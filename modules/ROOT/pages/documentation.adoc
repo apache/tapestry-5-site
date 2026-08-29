@@ -2,16 +2,43 @@
 :navtitle: Documentation
 
 == User Guide
-xref:userguide::index.adoc[]
+The xref:userguide::index.adoc[User Guide] is the reference documentation for Tapestry, versioned alongside the framework.
+Use the version selector to switch between releases.
+
+Two companion sections sit next to it in the same navigation: a *Cookbook* of worked recipes (including the xref:userguide:cookbook:ioc-cookbook.adoc[IoC Cookbook]) and the *FAQ*.
+
+== Getting Started
+* xref:getting-started.adoc[] – create and run your first application.
+* xref:tutorial:index.adoc[Tutorial] – a step-by-step walkthrough building a small application.
 
 == Release Notes
+* xref:userguide::release-notes-5.9.adoc[Tapestry 5.9] – the current release, built on Jakarta EE 9.
+* xref:userguide::release-notes-5.8.adoc[Tapestry 5.8]
+* xref:userguide::release-notes-5.7.adoc[Tapestry 5.7]
+* xref:userguide::release-notes-5.6.adoc[Tapestry 5.6]
+* xref:userguide::release-notes-5.5.adoc[Tapestry 5.5]
+* xref:userguide::release-notes-5.4.adoc[Tapestry 5.4]
+
+Older release notes are available from the Release Notes section of the User Guide navigation.
+
+Upgrading to 5.9 from an earlier release?
+Start with the xref:userguide::jakarta-ee-migration.adoc[Jakarta EE migration guide].
 
 == Javadoc
+* https://tapestry.apache.org/current/apidocs/[Current release]
+* https://tapestry.apache.org/5.9.0/apidocs/[5.9.0]
+* https://tapestry.apache.org/5.8.7/apidocs/[5.8.7]
+* https://tapestry.apache.org/5.7.3/apidocs/[5.7.3]
+
+Javadoc for every release is also available as a zip from the xref:download.adoc[download page].
 
 == FAQ
+* xref:userguide:faq:general.adoc[General]
+* xref:userguide:faq:ajax.adoc[Ajax]
+* xref:userguide:faq:templating-and-markup.adoc[Templating and Markup]
 
-== Tutorials
+== Compatibility
+xref:supported-environments-and-versions.adoc[] lists the Java, Servlet API, app server and library versions each Tapestry release is known to work with.
 
 == Learning Resources from the Community
 https://tapestry-jumpstart.org/[Tapestry Jumpstart] by Geoff Callender
-
