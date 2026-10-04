@@ -12,7 +12,7 @@ Two companion sections sit next to it in the same navigation: a *Cookbook* of wo
 * xref:tutorial:index.adoc[Tutorial] – a step-by-step walkthrough building a small application.
 
 == Release Notes
-* xref:userguide::release-notes-5.9.adoc[Tapestry 5.9] – the current release, built on Jakarta EE 9.
+* xref:userguide::release-notes-5.9.adoc[Tapestry 5.9] – the current release, supports both Jakarta EE 9 and Servlet API 3.x.
 * xref:userguide::release-notes-5.8.adoc[Tapestry 5.8]
 * xref:userguide::release-notes-5.7.adoc[Tapestry 5.7]
 * xref:userguide::release-notes-5.6.adoc[Tapestry 5.6]
